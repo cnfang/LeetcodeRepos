@@ -4,6 +4,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Leetcode <Problem 1116> Print Zero Even Odd
@@ -36,14 +39,15 @@ Output: "0102030405"
 
 */
 
-class ZeroEvenOdd_Semaphore {
+class ZeroEvenOdd {
     private int n;
     private int curr = 1;
     Semaphore sz;
     Semaphore se;
     Semaphore so;
     
-    public ZeroEvenOdd_Semaphore(int n) {
+    
+    public ZeroEvenOdd(int n) {
         this.n = n;
         sz = new Semaphore(1);
         se = new Semaphore(1);
@@ -57,7 +61,10 @@ class ZeroEvenOdd_Semaphore {
         }
     }
 
-    // printNumber.accept(x) outputs "x", where x is an integer.
+    /**
+     * print zero
+     * @throws InterruptedException
+     */
     public void zero() throws InterruptedException {
         while (this.curr <= this.n) {
             
@@ -77,6 +84,10 @@ class ZeroEvenOdd_Semaphore {
         }
     }
 
+    /**
+     * print even number
+     * @throws InterruptedException
+     */
     public void even() throws InterruptedException {
         
         while (this.curr <= this.n) {
@@ -92,81 +103,11 @@ class ZeroEvenOdd_Semaphore {
             sz.release();
         }
     }
-
-    public void odd() throws InterruptedException {
-        
-        while (this.curr <= this.n) {
-            
-            so.acquire();
-            
-            if(this.curr > this.n) return;
-            
-            System.out.print(this.curr);
-            
-            this.curr++;
-            
-            sz.release();
-        }
-    }
-}
-
-class ZeroEvenOdd_Lock {
-    private int n;
-    private int curr = 1;
-    Semaphore sz;
-    Semaphore se;
-    Semaphore so;
     
-    public ZeroEvenOdd_Lock(int n) {
-        this.n = n;
-        sz = new Semaphore(1);
-        se = new Semaphore(1);
-        so = new Semaphore(1);
-        try {
-            se.acquire();
-            so.acquire();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    // printNumber.accept(x) outputs "x", where x is an integer.
-    public void zero() throws InterruptedException {
-        while (this.curr <= this.n) {
-            
-            sz.acquire();
-            
-            if (this.curr > this.n) {
-                se.release();
-                so.release();
-                return;
-            }
-            
-            System.out.print("0");
-            
-            if ((this.curr & 1) == 1) so.release();
-            
-            else se.release();
-        }
-    }
-
-    public void even() throws InterruptedException {
-        
-        while (this.curr <= this.n) {
-            
-            se.acquire();
-            
-            if (this.curr > this.n) return;
-            
-            System.out.print(this.curr);
-            
-            this.curr++;
-            
-            sz.release();
-        }
-    }
-
+    /**
+     * print odd number
+     * @throws InterruptedException
+     */
     public void odd() throws InterruptedException {
         
         while (this.curr <= this.n) {
@@ -183,12 +124,13 @@ class ZeroEvenOdd_Lock {
         }
     }
 }
+
 
 public class Problem1116 {
 
    public static void main(String []args) {
        int n = 13;
-       ZeroEvenOdd_Semaphore processor = new ZeroEvenOdd_Semaphore(n);
+       ZeroEvenOdd processor = new ZeroEvenOdd(n);
        
        ExecutorService executor = Executors.newFixedThreadPool(3);
        
