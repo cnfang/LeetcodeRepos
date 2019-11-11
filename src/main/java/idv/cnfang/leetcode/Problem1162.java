@@ -3,6 +3,7 @@ package idv.cnfang.leetcode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.*;
+import org.junit.jupiter.api.Test;
 
 /**
 Leetcode <Problem 1162> As Far from Land as Possible
