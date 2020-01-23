@@ -9,8 +9,8 @@ This repository collects my practice on Leetcode
 IDE
 - Eclipse
 
-Library: 
-- Java SE 8
+Depenency: 
+- JRE requires Java SE 8
 - JUnit 5
 
 
