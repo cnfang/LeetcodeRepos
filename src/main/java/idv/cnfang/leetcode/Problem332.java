@@ -42,8 +42,57 @@ public class Problem332{
         }
     }
     
+//    static String concat(List<String> item) {
+//        //return item.stream().reduce("", (r, i) -> r+i);
+//        return String.join("", item);
+//    }
     
     public List<String> findItinerary(List<List<String>> tickets) {
+        // return method1(tickets); 
+        return method2(tickets);
+    }
+    
+    private List<String> method2(List<List<String>> tickets) {
+        tickets.sort((o1, o2) -> String.join("", o1).compareTo(String.join("", o2)));
+        Map<String, Queue<List<String>>> edges = new HashMap<String, Queue<List<String>>>();
+        tickets.forEach(ticket -> {
+            String start = ticket.get(0);
+            String end = ticket.get(1);
+            edges.putIfAbsent(start, new ArrayDeque<>());
+            edges.get(start).add(ticket);
+            
+            edges.putIfAbsent(end, new ArrayDeque<>());
+        });
+        
+        LinkedList<String> path = new LinkedList<>();
+        dfs2(edges, tickets.size() + 1, path, "JFK");
+        return path;
+    }
+    
+    private boolean dfs2(Map<String, Queue<List<String>>> edges, 
+                         int placeNum,
+                         LinkedList<String> path,
+                         String start) {
+        
+        path.add(start);
+        
+        if (path.size() == placeNum)
+            return true;
+        
+        int num = edges.get(start).size();
+        for (int i = 0; i < num; i++) {
+            List<String> item = edges.get(start).remove();
+            if (dfs2(edges, placeNum, path, item.get(1)))
+                return true;
+            edges.get(start).add(item);
+        }
+        
+        path.removeLast();
+        return false;
+    }
+    
+    
+    private List<String> method1(List<List<String>> tickets) {
         tickets.sort(new listComparator());
         HashMap<String, ArrayList<String>> lookup = new HashMap<String, ArrayList<String>>();
         HashMap<String, Integer> availableTicket = new HashMap<String, Integer>();
@@ -69,7 +118,6 @@ public class Problem332{
         dfs(ans, lookup, availableTicket, "JFK", tickets.size()+1);
         
         return ans;
-        
     }
     
     private boolean dfs(List<String> ans, HashMap<String, ArrayList<String>> lookup, HashMap<String, Integer> availableTicket, String key, int target) {
@@ -95,9 +143,36 @@ public class Problem332{
         return false;
     }
 
+    @Test
+    public void example1() {
+        List<List<String>> tickets = new ArrayList<List<String>>();
+        tickets.add(Arrays.asList("MUC","LHR"));
+        tickets.add(Arrays.asList("JFK","MUC"));
+        tickets.add(Arrays.asList("SFO","SJC"));
+        tickets.add(Arrays.asList("LHR","SFO"));
+        Problem332 sol = new Problem332();
+        List<String> result = sol.findItinerary(tickets);
+        List<String> expected = Arrays.asList("JFK", "MUC", "LHR", "SFO", "SJC");
+        assertEquals(expected, result);
+    }
     
     @Test
-    public void test_lengthOfLongestSubstring() {
+    public void example2() {
+        List<List<String>> tickets = new ArrayList<List<String>>();
+        tickets.add(Arrays.asList("JFK","SFO"));
+        tickets.add(Arrays.asList("JFK","ATL"));
+        tickets.add(Arrays.asList("SFO","ATL"));
+        tickets.add(Arrays.asList("ATL","JFK"));
+        tickets.add(Arrays.asList("ATL","SFO"));
+        
+        Problem332 sol = new Problem332();
+        List<String> result = sol.findItinerary(tickets);
+        List<String> expected = Arrays.asList("JFK","ATL","JFK","SFO","ATL","SFO");
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void example3() {
         List<List<String>> tickets = new ArrayList<List<String>>();
         tickets.add(Arrays.asList("EZE","TIA"));
         tickets.add(Arrays.asList("EZE","HBA"));
