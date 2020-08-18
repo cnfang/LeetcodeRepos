@@ -117,7 +117,7 @@ public class Problem210{
     }
     
     @Test
-    public void testfindOrder() {
+    public void test1() {
         int [][]prerequisites = {{1,0},{2,0},{3,1},{3,2}};
         int numCourses = 4;
         
@@ -125,6 +125,20 @@ public class Problem210{
         
         int []result = sol.findOrder(numCourses, prerequisites);
         int []expected = {0,2,1,3};
+        
+        assertArrayEquals(expected, result);
+        Arrays.stream(result).forEach(System.out::println);
+    }
+    
+    @Test
+    public void test2() {
+        int [][]prerequisites = {{1,0}};
+        int numCourses = 2;
+        
+        Problem210 sol = new Problem210();
+        
+        int []result = sol.findOrder(numCourses, prerequisites);
+        int []expected = {0,1};
         
         assertArrayEquals(expected, result);
         Arrays.stream(result).forEach(System.out::println);
