@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import idv.cnfang.leetcode.Problem98.TreeNode;
+
 /**
 Leetcode <Problem 124> Binary Tree Maximum Path Sum
 
@@ -37,6 +39,14 @@ Output: 42
 */
 
 public class Problem124 {
+	class TreeNode {
+	     int val;
+	     TreeNode left;
+	     TreeNode right;
+	     TreeNode(int x) { val = x; }
+
+	}
+	
     public int maxPathSum(TreeNode root) {
         if (root == null)
             return 0;

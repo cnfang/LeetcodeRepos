@@ -45,14 +45,15 @@ apply divide and conquer method, and set the min, max value to subproblem
 
 */
 
-class TreeNode {
-     int val;
-     TreeNode left;
-     TreeNode right;
-     TreeNode(int x) { val = x; }
 
-}
 public class Problem98 {
+	class TreeNode {
+	     int val;
+	     TreeNode left;
+	     TreeNode right;
+	     TreeNode(int x) { val = x; }
+
+	}
     public boolean isValidBST(TreeNode root) {
         return innerValidBST(root, null, null);
     }

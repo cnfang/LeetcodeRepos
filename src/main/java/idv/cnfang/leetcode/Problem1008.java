@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import idv.cnfang.leetcode.Problem98.TreeNode;
+
 /**
 Leetcode <Problem 1008> Construct Binary Search Tree from Preorder Traversal
 
@@ -22,7 +24,14 @@ Note:
 */
 
 public class Problem1008 {
-    
+	class TreeNode {
+	     int val;
+	     TreeNode left;
+	     TreeNode right;
+	     TreeNode(int x) { val = x; }
+
+	}
+	
     public TreeNode bstFromPreorder(int[] preorder) {
         if (preorder == null || preorder.length == 0)
             return null;
