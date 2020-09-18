@@ -2,6 +2,8 @@ package idv.cnfang.leetcode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.TreeSet;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -81,6 +83,35 @@ public class Problem152 {
         }
         
         return maxP;
+    }
+    
+    // Runtime 3ms 25.46% faster than Java submission, memory 39.3MB less than 88.23% java submission
+    public int maxProduct_TreeSet(int[] nums) {
+    	TreeSet<Integer> set = new TreeSet<>();
+        set.add(1);
+        int sum = 1, tmp = 0;
+        int maxProd = Integer.MIN_VALUE, maxProdSub = Integer.MIN_VALUE;
+        
+        for (int num: nums) {
+            sum *= num;
+            if (sum == 0) {
+                maxProd = Math.max(0, Math.max(maxProd, maxProdSub));
+                maxProdSub = Integer.MIN_VALUE;
+                set.clear();
+                set.add(1);
+                sum = 1;
+                continue;
+            } else if (sum > 0) {
+                tmp = sum;
+            } else if (sum < 0) {
+                Integer key = set.floor(-1);
+                int maxAcc = key == null? set.last(): key;
+                tmp = sum / maxAcc;
+            }
+            maxProdSub = Math.max(tmp, maxProdSub);
+            set.add(sum);
+        }
+        return Math.max(maxProdSub, maxProd);
     }
     
     @Test
