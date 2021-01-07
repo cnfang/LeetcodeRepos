@@ -2,9 +2,7 @@
 
 This repository collects my practice on Leetcode
 
-## Getting Started
-
-### Prerequisites
+## Prerequisites
 
 IDE
 - Eclipse
